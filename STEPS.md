@@ -15,3 +15,12 @@ php spark make:seeder UserSeeder
 
 ## TO run the seeder to insert initial data into the users table
 php spark db:seed UserSeeder
+
+## TO create a controller for authentication
+php spark make:controller AuthController
+
+## TO create a controller for admin functionalities
+php spark make:controller AdminController
+
+
+Next watch : https://youtu.be/1YWrEmBjEts?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio
