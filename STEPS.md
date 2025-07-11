@@ -22,5 +22,8 @@ php spark make:controller AuthController
 ## TO create a controller for admin functionalities
 php spark make:controller AdminController
 
+## TO create a controller for user functionalities
+php spark make:filter CIFilter
 
-Next watch : https://youtu.be/1YWrEmBjEts?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio
+
+Next watch : https://youtu.be/kC4v8g5C59M?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=347

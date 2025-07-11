@@ -24,10 +24,16 @@ class CIAuth
         }
     }
 
-    public static function check(){
+    // Check if the user is logged in
+    public static function isLoggedIn(){
         $session = session();
         return $session->has('logged_in');
     }
+    
+   /*  public static function check(){
+        $session = session();
+        return $session->has('logged_in');
+    } */
 
     public static function forget(){
         $session = session();

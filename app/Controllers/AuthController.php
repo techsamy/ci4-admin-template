@@ -84,4 +84,12 @@ class AuthController extends BaseController
             }
         }
     }
+
+    public function forgotPasswordForm(){
+        $data = [
+            'pageTitle' => 'Forgot Password',
+            'validation' => NULL
+        ];
+        return view('backend/pages/auth/forgot-password', $data);
+    }
 }
