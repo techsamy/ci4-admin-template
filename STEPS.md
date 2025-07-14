@@ -25,5 +25,20 @@ php spark make:controller AdminController
 ## TO create a controller for user functionalities
 php spark make:filter CIFilter
 
+## TO create a migration for creating password reset tokens table
+php spark make:migration create create_password_reset_tokens_table
 
+## To create the password ResetToken model
+php spark make:model PasswordResetToken
+
+## After create migration file, run the migration to create the table
+php spark migrate
+
+## To install Carbon for date and time handling
+composer require nesbot/carbon
+
+## To create a validation rule for strong passwords
+php spark make:validation isPasswordStrong
+
+#8. Setting Up a Profile Page in CodeIgniter 4
 Next watch : https://youtu.be/kC4v8g5C59M?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=347
