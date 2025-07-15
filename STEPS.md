@@ -41,4 +41,4 @@ composer require nesbot/carbon
 php spark make:validation isPasswordStrong
 
 #8. Setting Up a Profile Page in CodeIgniter 4
-Next watch : https://youtu.be/kC4v8g5C59M?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=347
+Next watch : https://youtu.be/e9IdGbageXA?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=820
