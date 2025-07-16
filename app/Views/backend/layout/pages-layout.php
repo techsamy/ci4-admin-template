@@ -20,6 +20,12 @@
 	<link rel="stylesheet" type="text/css" href="/backend/vendors/styles/core.css" />
 	<link rel="stylesheet" type="text/css" href="/backend/vendors/styles/icon-font.min.css" />
 	<link rel="stylesheet" type="text/css" href="/backend/vendors/styles/style.css" />
+
+	<!-- ijaboCropTool -->
+	<link rel="stylesheet" type="text/css" href="/extra-assets/ijaboCropTool/ijaboCropTool.min.css" />
+
+	<!-- Toastr (for notifications) -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <?= $this->renderSection('stylesheets'); ?>
 </head>
 
@@ -49,6 +55,9 @@
 	<script src="/backend/vendors/scripts/script.min.js"></script>
 	<script src="/backend/vendors/scripts/process.js"></script>
 	<script src="/backend/vendors/scripts/layout-settings.js"></script>
+	<script src="/extra-assets/ijaboCropTool/ijaboCropTool.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <?= $this->renderSection('scripts'); ?>
 </body>
 
