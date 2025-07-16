@@ -40,5 +40,5 @@ composer require nesbot/carbon
 ## To create a validation rule for strong passwords
 php spark make:validation isPasswordStrong
 
-#8. Setting Up a Profile Page in CodeIgniter 4
-Next watch : https://youtu.be/e9IdGbageXA?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=820
+#10. How to Change Password in CodeIgniter 4
+Next watch : https://youtu.be/dmybP67rCxY?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=5
