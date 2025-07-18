@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Libraries\CIAuth;
 use App\Models\User;
+use App\Libraries\Hash;
 
 class AdminController extends BaseController
 {
@@ -149,6 +150,86 @@ class AdminController extends BaseController
                 'msg' => 'Profile picture updated successfully.'
             ]);
         }  
+    }
 
+    public function changePassword(){
+        $request = \Config\Services::request();
+
+        if ( $request->isAJAX() ){ 
+            $validation = \Config\Services::validation();
+            $userID = CIAuth::id();
+            $user = new User();
+            $userInfo = $user->asObject()->where('id', $userID)->first();
+
+            $this->validate([
+                'current_password' => [
+                    'label' => 'Current Password',
+                    'rules' => 'required|min_length[5]|check_current_password[current_password]',
+                    'errors' => [
+                        'required' => '{field} is required',
+                        'min_length' => '{field} must be at least 5 characters long',
+                        'check_current_password' => 'Current password is incorrect.'
+                    ]
+                ],
+                'new_password' => [
+                    'label' => 'New Password',
+                    'rules' => 'required|min_length[5]|max_length[20]|is_password_strong[new_password]',
+                    'errors' => [
+                        'required' => '{field} is required',
+                        'min_length' => '{field} must be at least 5 characters long',
+                        'max_length' => '{field} must not exceed 20 characters',
+                        'is_password_strong' => 'Password must be contains at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.'
+                    ]
+                ],
+                'confirm_new_password' => [
+                    'label' => 'Confirm Password',
+                    'rules' => 'required|matches[new_password]',
+                    'errors' => [
+                        'required' => '{field} is required',
+                        'matches' => '{field} must match the new password.'
+                    ]
+                ]
+            ]);
+
+             if ( $validation->run() === FALSE ){
+                $errors = $validation->getErrors();
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'error' => $errors
+                ]);
+            } else {
+                // Update the password in the database
+                $user->where('id', $userID)->set([
+                    'password' => Hash::make($request->getVar('new_password'))
+                ])->update();
+
+                // send notification email to user (Admin) Email Address
+                $mailData = [
+                    'user' => $userInfo,
+                    'new_password' => $request->getVar('new_password')
+                ];
+
+                $view = \Config\Services::renderer();
+                $mailBody = $view->setVar('mailData', $mailData)->render('email-templates/password-changed-email-template');
+
+                $mailConfig = [
+                    'mail_from_email' => getenv('EMAIL_FROM_ADDRESS'),
+                    'mail_from_name' => getenv('EMAIL_FROM_NAME'),
+                    'mail_recipient_email' => $userInfo->email,
+                    'mail_recipient_name' => $userInfo->name,
+                    'mail_subject' => 'Password Changed Successfully',
+                    'mail_body' => $mailBody
+                ];
+
+                sendEmail($mailConfig);
+                return $this->response->setJSON([
+                    'status' => 1,
+                    'token' => csrf_hash(),
+                    'msg' => 'Password changed successfully !!'
+                ]);
+            }
+
+        }
     }
 }

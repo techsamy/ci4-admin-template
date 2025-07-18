@@ -90,7 +90,35 @@
                         <!-- Change Password Tab start -->
                         <div class="tab-pane fade" id="change_password" role="tabpanel">
                             <div class="pd-20 profile-task-wrap">
-                                ----------------- Change Password -----------------
+                                <form action="<?= route_to('change-password'); ?>" method="post" id="change-password-form">
+                                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="ci_csrf_data">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="current_password">Current Password</label>
+                                                <input type="password" class="form-control" placeholder="Enter Current Password" name="current_password">
+                                                <span class="text-danger error-text current_password_error"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="new_password">New Password</label>
+                                                <input type="password" class="form-control" placeholder="Enter New Password" name="new_password">
+                                                <span class="text-danger error-text new_password_error"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="confirm_new_password">Confirm New Password</label>
+                                                <input type="password" class="form-control" placeholder="Retype New Password" name="confirm_new_password">
+                                                <span class="text-danger error-text confirm_new_password_error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm">Change Passowrd</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <!-- Change Password Tab End -->
@@ -159,6 +187,50 @@
             alert(message);
         }
     });   
+
+    // Handle the form submission for changing password
+    $('#change-password-form').on('submit', function(e) {
+        e.preventDefault();
+
+        // CSRF Hash
+        var csrfName = $('.ci_csrf_data').attr('name'); // CSRF token name
+        var csrfHash = $('.ci_csrf_data').val();
+        var form = this;
+        var formData = new FormData(form);
+        formData.append(csrfName, csrfHash); // Append CSRF token to the form data
+        
+        $.ajax({
+            url: $(form).attr('action'),
+            method: $(form).attr('method'),
+            data: formData,
+            processData: false,
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            beforeSend: function() {
+                toastr.remove();
+                $(form).find('span.error-text').text('');
+            },
+            success: function(response) {
+
+                // Update CSRF token value
+                $('.ci_csrf_data').val(response.token); 
+
+                if ( $.isEmptyObject(response.error) ) {
+                    if ( response.status == 1 ) {
+                        $(form)[0].reset(); // Reset the form
+                        toastr.success(response.msg);
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                } else {
+                    $.each(response.error, function(prefix, val) {
+                        $(form).find('span.' + prefix + '_error').text(val);
+                    });
+                }
+            }
+        });
+    });
 
 </script>
 <?php $this->endsection(); ?>
