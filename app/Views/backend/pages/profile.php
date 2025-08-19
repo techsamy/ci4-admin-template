@@ -115,8 +115,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm">Change Passowrd</button>
+                                    <div class="form-group"><button type="submit" class="btn btn-primary btn-sm">Change Password</button>
                                     </div>
                                 </form>
                             </div>

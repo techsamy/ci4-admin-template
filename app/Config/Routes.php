@@ -19,6 +19,9 @@ $routes->group('admin', static function ($routes) {
         $routes->post('update-personal-details', 'AdminController::updatePersonalDetails', ['as' => 'update-personal-details']);
         $routes->post('update-profile-picture', 'AdminController::updateProfilePicture', ['as' => 'update-profile-picture']);
         $routes->post('change-password', 'AdminController::changePassword', ['as' => 'change-password']);
+        $routes->get('settings','AdminController::settings', ['as' => 'settings']);
+        $routes->post('update-general-settings', 'AdminController::updateGeneralSettings', ['as' => 'update-general-settings']);
+        $routes->post('update-website-logo', 'AdminController::updateWebsiteLogo', ['as' => 'update-website-logo']);
     });
 
     $routes->group('', ['filter' => 'cifilter:guest'], static function ($routes) {

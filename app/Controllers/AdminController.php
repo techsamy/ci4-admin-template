@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Libraries\CIAuth;
 use App\Models\User;
 use App\Libraries\Hash;
+use App\Models\Setting;
 
 class AdminController extends BaseController
 {
@@ -32,6 +33,9 @@ class AdminController extends BaseController
         return view('backend/pages/profile', $data);
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function updatePersonalDetails(){
         $request = \Config\Services::request();
         $validation = \Config\Services::validation();
@@ -152,6 +156,9 @@ class AdminController extends BaseController
         }  
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function changePassword(){
         $request = \Config\Services::request();
 
@@ -230,6 +237,74 @@ class AdminController extends BaseController
                 ]);
             }
 
+        }
+    }
+
+    public function settings(){
+        $data = [
+            'pageTitle' => 'Settings'
+        ];
+
+        return view('backend/pages/settings', $data);
+    }
+
+    public function updateGeneralSettings(){
+        $request = \Config\Services::request();
+        
+        if ( $request->isAJAX() ){
+            $validation = \Config\Services::validation();
+
+            $this->validate([
+                'website_title' => [
+                    'label' => 'Website Name',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} is required'
+                    ]
+                ],
+                'website_email' => [
+                    'label' => 'Website Email',
+                    'rules' => 'required|valid_email',
+                    'errors' => [
+                        'required' => '{field} is required',
+                        'valid_email' => '{field} must be a valid email address.'
+                    ]
+                ]
+            ]);
+
+            if ( $validation->run() == FALSE ){
+                $errors = $validation->getErrors();
+                return json_encode([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'error' => $errors
+                ]);
+            } else {
+                $settings = new Setting();
+                $setting_id = $settings->asObject()->first()->id;
+                $update = $settings->where('id', $setting_id)
+                    ->set([
+                    'website_title'            => $request->getVar('website_title'),
+                    'website_email'            => $request->getVar('website_email'),
+                    'website_phone'            => $request->getVar('website_phone'),
+                    'website_meta_keywords'    => $request->getVar('website_meta_keywords'),
+                    'website_meta_description' => $request->getVar('website_meta_description')
+                ])->update();
+
+                if ( $update ){
+                    return json_encode([
+                        'status' => 1,
+                        'token' => csrf_hash(),
+                        'msg' => 'General settings updated successfully !!'
+                    ]);
+                } else {
+                    return json_encode([
+                        'status' => 0,
+                        'token' => csrf_hash(),
+                        'msg' => 'Database error occurred while updating general settings.'
+                    ]);
+                }
+            }
         }
     }
 }

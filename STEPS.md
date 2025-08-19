@@ -43,5 +43,15 @@ php spark make:validation isPasswordStrong
 ## To create a validation rule for checking if the current password is correct
 php spark make:validation isCurrentPasswordCorrect
 
-#11. General Settings Page in CodeIgniter 4
-Next watch : https://youtu.be/Ze_AITcZ3Ds?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio&t=1
+## To create a migration for creating settings table
+php spark make:migration create_settings_table
+
+## To create the Setting model
+php spark make:model Setting
+
+## After create migration file, run the migration to create the table
+php spark migrate
+
+#12. How to Change Logo in CodeIgniter 4
+
+Next watch : https://youtu.be/xjaS1tWOZuU?list=PLX4adOBVJXavmNeP7CU295sX76jgzziio
